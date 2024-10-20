@@ -4,11 +4,10 @@ import { prisma } from '@/lib/prisma';
 export async function POST(req: NextRequest) {
   try {
     const userData = await req.json();
+
     if (!userData || !userData.id) {
       return NextResponse.json({ error: 'Invalid user data' }, { status: 400 });
     }
-
-    const currentTime = new Date();
 
     let user = await prisma.user.findUnique({
       where: { telegramId: userData.id },
@@ -37,15 +36,6 @@ export async function POST(req: NextRequest) {
     const inviterId = userData.start_param ? parseInt(userData.start_param) : null;
 
     if (!user) {
-      const newUserData = {
-        telegramId: userData.id,
-        username: userData.username || '',
-        firstName: userData.first_name || '',
-        lastName: userData.last_name || '',
-        isOnline: true,
-        currentTime,
-      };
-
       if (inviterId) {
         const inviterInfo = await prisma.user.findUnique({
           where: { telegramId: inviterId },
@@ -53,29 +43,61 @@ export async function POST(req: NextRequest) {
         });
 
         if (inviterInfo) {
-          newUserData.invitedBy = `@${inviterInfo.username || inviterId}`;
-          
-          user = await prisma.user.create({ data: newUserData });
+          user = await prisma.user.create({
+            data: {
+              telegramId: userData.id,
+              username: userData.username || '',
+              firstName: userData.first_name || '',
+              lastName: userData.last_name || '',
+              invitedBy: `@${inviterInfo.username || inviterId}`,
+              isOnline: true,
+              currentTime: new Date()
+            }
+          });
 
+          // Award 1000 points to the inviter
           await prisma.user.update({
             where: { telegramId: inviterId },
             data: {
-              invitedUsers: { push: `@${userData.username || userData.id}` },
-              points: { increment: 1000 }
+              invitedUsers: {
+                push: `@${userData.username || userData.id}`
+              },
+              points: {
+                increment: 1000
+              }
             }
           });
         } else {
-          user = await prisma.user.create({ data: newUserData });
+          user = await prisma.user.create({
+            data: {
+              telegramId: userData.id,
+              username: userData.username || '',
+              firstName: userData.first_name || '',
+              lastName: userData.last_name || '',
+              isOnline: true,
+              currentTime: new Date()
+            }
+          });
         }
       } else {
-        user = await prisma.user.create({ data: newUserData });
+        user = await prisma.user.create({
+          data: {
+            telegramId: userData.id,
+            username: userData.username || '',
+            firstName: userData.first_name || '',
+            lastName: userData.last_name || '',
+            isOnline: true,
+            currentTime: new Date()
+          }
+        });
       }
     } else {
+      // Update user's online status and current time
       user = await prisma.user.update({
         where: { telegramId: userData.id },
         data: {
           isOnline: true,
-          currentTime,
+          currentTime: new Date()
         }
       });
     }
@@ -88,6 +110,7 @@ export async function POST(req: NextRequest) {
       });
     }
 
+    // Check farming status
     let farmingStatus = 'farm';
     if (user.startFarming) {
       const now = new Date();
@@ -102,10 +125,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ user, inviterInfo, farmingStatus });
   } catch (error) {
     console.error('Error processing user data:', error);
-    if (error instanceof Error) {
-      console.error('Error message:', error.message);
-      console.error('Error stack:', error.stack);
-    }
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
