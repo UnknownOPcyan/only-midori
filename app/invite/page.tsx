@@ -74,10 +74,11 @@ export default function Invite() {
     return <div className={styles.error}>{error}</div>
   }
 
-  if (!user) return <div className={styles.loader}></div>
+  if (!user) return <div className={styles.loading}>Loading...</div>
 
   return (
     <div className={`${styles.container} ${isDarkMode ? styles.darkMode : ''}`}>
+      <div className={styles.backgroundShapes}></div>
       <div className={styles.content}>
         <div className={styles.header}>
           <div className={styles.iconContainer}>
