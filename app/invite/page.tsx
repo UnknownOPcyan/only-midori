@@ -20,6 +20,7 @@ export default function Invite() {
   const [inviteLink, setInviteLink] = useState('')
   const [invitedUsers, setInvitedUsers] = useState<string[]>([])
   const [isDarkMode, setIsDarkMode] = useState(false)
+  const [isCopied, setIsCopied] = useState(false)
 
   useEffect(() => {
     if (typeof window !== 'undefined' && window.Telegram?.WebApp) {
@@ -61,8 +62,12 @@ export default function Invite() {
   const handleInvite = () => {
     if (inviteLink) {
       navigator.clipboard.writeText(inviteLink).then(() => {
+        setIsCopied(true)
         setNotification('Invite link copied to clipboard!')
-        setTimeout(() => setNotification(''), 3000)
+        setTimeout(() => {
+          setIsCopied(false)
+          setNotification('')
+        }, 5000)
       }).catch(err => {
         console.error('Failed to copy: ', err)
         setNotification('Failed to copy invite link. Please try again.')
@@ -96,13 +101,15 @@ export default function Invite() {
           </p>
         </div>
 
-        <button onClick={handleInvite} className={styles.inviteButton}>
+        <button 
+          onClick={handleInvite} 
+          className={`${styles.inviteButton} ${isCopied ? styles.copied : ''}`}
+        >
           <span className={styles.buttonText}>Copy Invite Link</span>
           <span className={styles.buttonIcon}>
             <i className="fas fa-copy"></i> Copied
           </span>
         </button>
-
 
         <div className={styles.invitedSection}>
           <div className={styles.invitedHeader}>
