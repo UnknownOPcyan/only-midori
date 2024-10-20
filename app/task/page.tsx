@@ -51,7 +51,6 @@ export default function Home() {
               setButtonStage3(data.user.claimedButton6 ? 'claimed' : 'check')
               setButtonStage7(data.user.claimedButton7 ? 'claimed' : 'check')
               setButtonStage8(data.user.claimedButton8 ? 'claimed' : 'check')
-              
             }
           })
           .catch(() => {
@@ -88,7 +87,6 @@ export default function Home() {
       setError('An error occurred while increasing points')
     }
   }
-
 
   const handleButtonClick4 = () => {
     if (buttonStage1 === 'check') {
@@ -128,7 +126,7 @@ export default function Home() {
   const handleClaim4 = () => {
     if (buttonStage1 === 'claim') {
       setIsLoading(true)
-      handleIncreasePoints(100, 'button4')
+      handleIncreasePoints(200, 'button4')
       setTimeout(() => {
         setButtonStage1('claimed')
         setIsLoading(false)
@@ -138,22 +136,30 @@ export default function Home() {
 
   const handleClaim5 = () => {
     if (buttonStage2 === 'claim') {
-      handleIncreasePoints(150, 'button5')
-      setButtonStage2('claimed')
+      setIsLoading(true)
+      handleIncreasePoints(200, 'button5')
+      setTimeout(() => {
+        setButtonStage2('claimed')
+        setIsLoading(false)
+      }, 3000)
     }
   }
 
   const handleClaim6 = () => {
     if (buttonStage3 === 'claim') {
-      handleIncreasePoints(300, 'button6')
-      setButtonStage3('claimed')
+      setIsLoading(true)
+      handleIncreasePoints(200, 'button6')
+      setTimeout(() => {
+        setButtonStage3('claimed')
+        setIsLoading(false)
+      }, 3000)
     }
   }
 
   const handleClaim7 = () => {
     if (buttonStage7 === 'claim') {
       setIsLoading1(true)
-      handleIncreasePoints(150, 'button7')
+      handleIncreasePoints(200, 'button7')
       setTimeout(() => {
         setButtonStage7('claimed')
         setIsLoading1(false)
@@ -164,7 +170,7 @@ export default function Home() {
   const handleClaim8 = () => {
     if (buttonStage8 === 'claim') {
       setIsLoading2(true)
-      handleIncreasePoints(150, 'button8')
+      handleIncreasePoints(200, 'button8')
       setTimeout(() => {
         setButtonStage8('claimed')
         setIsLoading2(false)
@@ -172,12 +178,11 @@ export default function Home() {
     }
   }
 
-  
   if (error) {
     return <div className="container mx-auto p-4 text-red-500">{error}</div>
   }
 
-  if (!user) return <div className="container mx-auto p-4"><div className="loader"></div></div>
+  if (!user) return <div className="loader"></div>
 
   return (
     <TaskUI 
