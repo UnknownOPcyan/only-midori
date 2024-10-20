@@ -1,3 +1,4 @@
+// app/api/increase-points/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
@@ -9,7 +10,6 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: 'Invalid telegramId' }, { status: 400 });
         }
 
-        // Define claimed field based on buttonId
         let claimedField: string | null = null;
         if (buttonId === 'button1') {
             claimedField = 'claimedButton1';
@@ -24,22 +24,26 @@ export async function POST(req: NextRequest) {
         } else if (buttonId === 'button6') {
             claimedField = 'claimedButton6';
         } else if (buttonId === 'button7') {
-          claimedField = 'claimedButton7';
-      } else if (buttonId === 'button8') {
-        claimedField = 'claimedButton8';
-    }
+            claimedField = 'claimedButton7';
+        } else if (buttonId === 'button8') {
+            claimedField = 'claimedButton8';
+        }
 
-        // Check if claimedField is valid
-        if (!claimedField) {
-            return NextResponse.json({ error: 'Invalid buttonId' }, { status: 400 });
+        const updateData: any = { 
+            points: { increment: pointsToAdd },
+        };
+
+        if (claimedField) {
+            updateData[claimedField] = true;
+        }
+
+        if (buttonId === 'farmButton') {
+            updateData.startFarming = null;
         }
 
         const updatedUser = await prisma.user.update({
             where: { telegramId },
-            data: { 
-                points: { increment: pointsToAdd }, // Increment points by pointsToAdd
-                [claimedField]: true // Update claimed status based on buttonId
-            }
+            data: updateData
         });
 
         return NextResponse.json({ success: true, points: updatedUser.points });
