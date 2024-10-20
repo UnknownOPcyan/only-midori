@@ -91,7 +91,6 @@
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  transition: background-color 0.3s;
 }
 
 .darkMode .inviteButton {
@@ -109,19 +108,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: top 0.3s;
+  transition: opacity 0.3s ease-in-out;
 }
 
 .buttonIcon {
-  top: 100%;
+  opacity: 0;
 }
 
-.inviteButton:active .buttonText {
-  top: -100%;
+.inviteButton.copied .buttonText {
+  opacity: 0;
 }
 
-.inviteButton:active .buttonIcon {
-  top: 0;
+.inviteButton.copied .buttonIcon {
+  opacity: 1;
 }
 
 .invitedSection {
