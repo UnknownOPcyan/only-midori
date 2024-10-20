@@ -80,6 +80,7 @@
 
 .inviteButton {
   width: 100%;
+  height: 45px;
   background-color: black;
   color: white;
   font-weight: bold;
@@ -88,11 +89,39 @@
   margin-bottom: 1.5rem;
   border: none;
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: background-color 0.3s;
 }
 
 .darkMode .inviteButton {
   background-color: white;
   color: black;
+}
+
+.buttonText,
+.buttonIcon {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: top 0.3s;
+}
+
+.buttonIcon {
+  top: 100%;
+}
+
+.inviteButton:active .buttonText {
+  top: -100%;
+}
+
+.inviteButton:active .buttonIcon {
+  top: 0;
 }
 
 .invitedSection {
