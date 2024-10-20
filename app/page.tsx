@@ -155,7 +155,7 @@ export default function Home() {
         handleIncreasePoints(200, 'farmButton');
         setTimeout(() => {
           setFarmingStatus('farm');
-        }, 2000); // 2-second delay
+        }, 1000); // 2-second delay
       }
   }
 
