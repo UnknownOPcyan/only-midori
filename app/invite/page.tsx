@@ -82,6 +82,8 @@ export default function Invite() {
       </div>
     );
   }
+};
+
 
   return (
     <div className={`${styles.container} ${isDarkMode ? styles.darkMode : ''}`}>
