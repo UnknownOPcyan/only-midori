@@ -49,6 +49,7 @@ export default function Home() {
               setButtonStage1(data.user.claimedButton1 ? 'claimed' : 'check')
               setButtonStage2(data.user.claimedButton2 ? 'claimed' : 'check')
               setButtonStage3(data.user.claimedButton3 ? 'claimed' : 'check')
+              setFarmingStage(data.farmingStage)
             }
           })
           .catch(() => {
@@ -70,8 +71,23 @@ export default function Home() {
       clearInterval(onlineInterval)
       if (farmingTimer) clearTimeout(farmingTimer)
     }
-
   }, [])
+
+  const updateOnlineStatus = async () => {
+    if (user) {
+      try {
+        await fetch('/api/update-online-status', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ telegramId: user.telegramId }),
+        })
+      } catch (error) {
+        console.error('Failed to update online status:', error)
+      }
+    }
+  }
 
   const handleIncreasePoints = async (pointsToAdd: number, buttonId: string) => {
     if (!user) return
@@ -96,7 +112,6 @@ export default function Home() {
       setError('An error occurred while increasing points')
     }
   }
-
 
   const handleButtonClick1 = () => {
     if (buttonStage1 === 'check') {
@@ -144,47 +159,33 @@ export default function Home() {
     }
   }
 
-const updateOnlineStatus = async () => {
-  try {
-    await fetch('/api/update-online-status', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ telegramId: user.telegramId }),
-    })
-  } catch (error) {
-    console.error('Failed to update online status:', error)
-  }
-}
-
-const handleFarmClick = async () => {
-  if (farmingStage === 'farm') {
-    setFarmingStage('farming')
-    try {
-      const res = await fetch('/api/start-farming', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ telegramId: user.telegramId }),
-      })
-      const data = await res.json()
-      if (data.success) {
-        const timer = setTimeout(() => {
-          setFarmingStage('claim')
-        }, 30000)
-        setFarmingTimer(timer)
+  const handleFarmClick = async () => {
+    if (farmingStage === 'farm') {
+      setFarmingStage('farming')
+      try {
+        const res = await fetch('/api/start-farming', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ telegramId: user.telegramId }),
+        })
+        const data = await res.json()
+        if (data.success) {
+          const timer = setTimeout(() => {
+            setFarmingStage('claim')
+          }, 30000)
+          setFarmingTimer(timer)
+        }
+      } catch (error) {
+        console.error('Failed to start farming:', error)
+        setFarmingStage('farm')
       }
-    } catch (error) {
-      console.error('Failed to start farming:', error)
+    } else if (farmingStage === 'claim') {
+      handleIncreasePoints(200, 'farmButton')
       setFarmingStage('farm')
     }
-  } else if (farmingStage === 'claim') {
-    handleIncreasePoints(200, 'farmButton')
-    setFarmingStage('farm')
   }
-}
 
   if (!user) return <div className="container mx-auto p-4">Loading...</div>
 
