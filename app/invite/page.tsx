@@ -75,9 +75,7 @@ export default function Invite() {
   }
 
   if (!user) return (
-  <div className="container mx-auto p-4">
     <div className="loader"></div>
-  </div>
 );
 
   return (
