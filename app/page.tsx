@@ -152,9 +152,11 @@ export default function Home() {
         console.error('Error starting farming:', error)
       }
     } else if (farmingStatus === 'claim') {
-      handleIncreasePoints(200, 'farmButton')
-      setFarmingStatus('farm')
-    }
+        handleIncreasePoints(200, 'farmButton');
+        setTimeout(() => {
+          setFarmingStatus('farm');
+        }, 2000); // 2-second delay
+      }
   }
 
   const handleButtonClick1 = () => {
