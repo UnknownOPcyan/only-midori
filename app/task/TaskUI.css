@@ -1,0 +1,206 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+
+body {
+    font-family: 'Fredoka One', cursive;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+.task-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Light theme styles */
+.light-theme {
+    background-color: #fff;
+    color: #000;
+}
+
+.light-theme .points {
+    background-color: #d3d3d3;
+    color: #000;
+}
+
+.light-theme .task-icon svg {
+    color: #666;
+}
+
+.light-theme .description {
+    color: #666;
+}
+
+.light-theme .task-list li {
+    border-bottom: 1px solid #ddd;
+}
+
+.light-theme .task-list li button {
+    background-color: #000;
+    color: #fff;
+}
+
+.light-theme .footer {
+    background-color: #fff;
+    border-top: 2px solid #666;
+}
+
+.light-theme .footer i {
+    color: #666;
+}
+
+/* Dark theme styles */
+.dark-theme {
+    background-color: #1c1c1e;
+    color: #fff;
+}
+
+.dark-theme .points {
+    background-color: #2c2c2e;
+    color: #fff;
+}
+
+.dark-theme .task-icon svg {
+    color: #a0a0a0;
+}
+
+.dark-theme .description {
+    color: #a0a0a0;
+}
+
+.dark-theme .task-list li {
+    border-bottom: 1px solid #3a3a3c;
+}
+
+.dark-theme .task-list li button {
+    background-color: #0a84ff;
+    color: #000005;
+}
+
+.dark-theme .footer {
+    background-color: #1c1c1e;
+    border-top: 2px solid #3a3a3c;
+}
+
+.dark-theme .footer i {
+    color: #a0a0a0;
+}
+
+/* Common styles */
+.points {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 20px;
+    margin-top: 10px;
+}
+
+.points span {
+    font-size: 24px;
+    font-weight: bold;
+}
+.task-icon-container {
+    width: 100%; /* Full width for centering */
+    display: flex; /* Enables flexbox layout */
+    justify-content: center; /* Centers the icon horizontally */
+}
+
+.task-icon {
+    font-size: 100px; /* Size of the icon */
+    margin: 20px 0; /* Vertical spacing */
+}
+
+.task-icon svg {
+    width: 100px; /* Width of the SVG */
+    height: 100px; /* Height of the SVG */
+    opacity: 1; /* Semi-transparent effect */
+}
+
+
+.description {
+    font-size: 18px;
+    margin-bottom: 20px;
+    padding: 0 20px;
+}
+
+.task-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.task-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.task-list li:last-child {
+    border-bottom: none;
+}
+
+.task-list li i {
+    font-size: 24px;
+    margin-right: 10px;
+}
+
+.task-list li span {
+    flex-grow: 1;
+    text-align: left;
+    font-weight: 400;
+}
+
+.task-list li button {
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: 'Fredoka One', cursive;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.task-list li button:hover:not(:disabled) {
+    box-shadow: 0 0 10px 2px #00ff00;
+    transform: scale(1.1);
+}
+
+.task-list li button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.footer-container {
+  background-color: white; /* White background */
+  width: 100%;
+  padding: 1rem; /* Space inside */
+  display: flex;
+  justify-content: space-around; /* Evenly spaced items */
+  align-items: center; /* Centered vertically */
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+  position: fixed; /* Fixed position */
+  bottom: 0; /* Sticks to the bottom */
+  left: 0; /* Aligns to the left */
+  z-index: 1000; /* Ensures it stays above other content */
+}
+
+
+.footer-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: black; /* Changed from #4a5568 */
+  transition: color 0.3s;
+}
+
+.footer-link:hover {
+  color: #2d3748; /* hover:text-gray-900 */
+}
+
+.footer-icon {
+  font-size: 1.5rem; /* text-2xl */
+}
+
+.footer-text {
+  font-weight: 500; /* font-medium */
+}
