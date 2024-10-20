@@ -91,6 +91,7 @@
   cursor: pointer;
   position: relative;
   overflow: hidden;
+  transition: background-color 0.3s ease;
 }
 
 .darkMode .inviteButton {
@@ -98,28 +99,50 @@
   color: black;
 }
 
+.inviteButton:active {
+  background-color: #333;
+}
+
+.darkMode .inviteButton:active {
+  background-color: #e0e0e0;
+}
+
 .buttonText,
 .buttonIcon {
   position: absolute;
   width: 100%;
   height: 100%;
-  top: 0;
   left: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.3s ease-in-out;
+  transition: top 0.3s ease, opacity 0.3s ease;
+}
+
+.buttonText {
+  top: 0;
 }
 
 .buttonIcon {
-  opacity: 0;
+  top: 100%;
 }
 
 .inviteButton.copied .buttonText {
+  top: -100%;
   opacity: 0;
 }
 
 .inviteButton.copied .buttonIcon {
+  top: 0;
+  opacity: 1;
+}
+
+.inviteButton.fadeOut .buttonIcon {
+  opacity: 0;
+}
+
+.inviteButton.fadeOut .buttonText {
+  top: 0;
   opacity: 1;
 }
 
