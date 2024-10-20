@@ -74,17 +74,7 @@ export default function Invite() {
     return <div className={styles.error}>{error}</div>
   }
 
- const LoadingComponent = ({ user }) => {
-  if (!user) {
-    return (
-      <div className="container mx-auto p-4">
-        <div className="loader"></div>
-      </div>
-    );
-  }
-     return <div>Content goes here...</div>;
-};
-
+  if (!user) return <div className={styles.loading}>Loading...</div>
 
   return (
     <div className={`${styles.container} ${isDarkMode ? styles.darkMode : ''}`}>
