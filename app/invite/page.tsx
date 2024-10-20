@@ -75,8 +75,8 @@ export default function Invite() {
   }
 
   if (!user) return (
-  <div className="loading-container">
-    <i className="fas fa-spinner fa-spin"></i>
+  <div className="container mx-auto p-4">
+    <div className="spinner"></div>
   </div>
 );
 
