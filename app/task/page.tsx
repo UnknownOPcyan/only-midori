@@ -177,7 +177,7 @@ export default function Home() {
     return <div className="container mx-auto p-4 text-red-500">{error}</div>
   }
 
-  if (!user) return <div className="container mx-auto p-4">Loading...</div>
+  if (!user) return <div className="container mx-auto p-4"><div className="loader"></div></div>
 
   return (
     <TaskUI 
@@ -201,7 +201,6 @@ export default function Home() {
       handleClaim6={handleClaim6}
       handleClaim7={handleClaim7}
       handleClaim8={handleClaim8}
-      
     />
   )
 }
