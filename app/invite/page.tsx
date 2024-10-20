@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { WebApp } from '@twa-dev/types'
 import styles from './invite.module.css'
@@ -74,7 +74,7 @@ export default function Invite() {
     return <div className={styles.error}>{error}</div>
   }
 
-  if (!user) return <div className={styles.loading}>Loading...</div>
+  if (!user) return <div className={styles.loader}></div>
 
   return (
     <div className={`${styles.container} ${isDarkMode ? styles.darkMode : ''}`}>
