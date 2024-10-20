@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { toggleUpdateText } from './utils';
 import './HomeUI.css';
@@ -36,8 +36,6 @@ export default function HomeUI({
   handleClaim3,
   handleFarmClick,
 }: HomeUIProps) {
-  const [farmingPoints, setFarmingPoints] = useState(0);
-
   useEffect(() => {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
@@ -45,19 +43,6 @@ export default function HomeUI({
     document.head.appendChild(link);
     toggleUpdateText();
   }, []);
-
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (farmingStatus === 'farming') {
-      setFarmingPoints(0);
-      interval = setInterval(() => {
-        setFarmingPoints(prev => prev + 1);
-      }, 1000);
-    }
-    return () => {
-      if (interval) clearInterval(interval);
-    };
-  }, [farmingStatus]);
 
   return (
     <div className="home-container">
@@ -125,17 +110,11 @@ export default function HomeUI({
       </div>
       <div className="flex-grow"></div>
       <button 
-        className={`farm-button ${farmingStatus === 'farming' ? 'farming' : ''} ${farmingStatus === 'claim' ? 'claim-ready' : ''}`}
+        className="farm-button"
         onClick={handleFarmClick}
         disabled={farmingStatus === 'farming'}
       >
-        {farmingStatus === 'farm' ? 'Farm PixelDogs' : 
-         farmingStatus === 'farming' ? (
-           <span className="farming-text">
-             Farming...
-             <span className="farming-points">{farmingPoints}</span>
-           </span>
-         ) : 'Claim Farm'}
+        {farmingStatus === 'farm' ? 'Farm PixelDogs' : farmingStatus === 'farming' ? 'Farming...' : 'Claim Farm'}
       </button>
       {notification && (
         <div className="notification">
