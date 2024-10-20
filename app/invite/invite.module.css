@@ -21,6 +21,7 @@
   to {
     transform: rotate(360deg);
   }
+}
 
 .darkMode {
   background-color: #121212;
