@@ -60,28 +60,43 @@ export default function TaskUI({
     }
   }, []);
 
-  const renderButton = (stage: 'check' | 'claim' | 'claimed', onClick: () => void, isLoading: boolean) => {
-    let content;
-    if (isLoading) {
-      content = 'Claiming...';
-    } else if (stage === 'check') {
-      content = '+200';
+  const renderButton = (stage: 'check' | 'claim' | 'claimed', points: number, onClick: () => void, isLoading: boolean) => {
+    if (stage === 'check') {
+      return (
+        <button className="button" onClick={onClick} disabled={isLoading}>
+          <div className="button-wrapper">
+            <div className="text">+{points}</div>
+            <span className="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+            </span>
+          </div>
+        </button>
+      );
     } else if (stage === 'claim') {
-      content = 'Claim';
+      return (
+        <button className="button" onClick={onClick} disabled={isLoading}>
+          <div className="button-wrapper">
+            <div className="text">Claim</div>
+            <span className="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+            </span>
+          </div>
+        </button>
+      );
     } else {
-      content = 'Claimed';
+      return (
+        <button className="button" disabled>
+          <div className="button-wrapper">
+            <div className="text">Claimed</div>
+          </div>
+        </button>
+      );
     }
-
-    return (
-      <button
-        onClick={onClick}
-        disabled={stage === 'claimed' || isLoading}
-        className={stage === 'claim' ? 'slide-up' : ''}
-      >
-        {content}
-      </button>
-    );
   };
+
+  if (!user) {
+    return <div className="loader"></div>;
+  }
 
   return (
     <div className={`task-page ${isDarkMode ? 'dark-theme' : 'light-theme'}`}>
@@ -105,30 +120,30 @@ export default function TaskUI({
         <li>
           <i className="fab fa-youtube"></i>
           <span>Subscribe PG YouTube channel :</span>
-          {renderButton(buttonStage1, buttonStage1 === 'check' ? handleButtonClick4 : handleClaim4, isLoading)}
+          {renderButton(buttonStage1, 200, handleButtonClick4, isLoading)}
         </li>
         <li>
           <i className="fab fa-telegram-plane"></i>
           <span>Subscribe PG Telegram Channel :</span>
-          {renderButton(buttonStage3, buttonStage3 === 'check' ? handleButtonClick6 : handleClaim6, false)}
+          {renderButton(buttonStage3, 200, handleButtonClick6, isLoading)}
         </li>
         <li>
           <i className="fab fa-twitter"></i>
           <span>Follow PG's X Handle :</span>
-          {renderButton(buttonStage2, buttonStage2 === 'check' ? handleButtonClick5 : handleClaim5, false)}
+          {renderButton(buttonStage2, 200, handleButtonClick5, isLoading)}
         </li>
         <li>
           <i className="fab fa-discord"></i>
           <span>Join PG's Discord Server :</span>
-          {renderButton(buttonStage7, buttonStage7 === 'check' ? handleButtonClick7 : handleClaim7, isLoading1)}
+          {renderButton(buttonStage7, 200, handleButtonClick7, isLoading1)}
         </li>
         <li>
           <i className="fab fa-instagram"></i>
           <span>Follow PG Instagram Handle :</span>
-          {renderButton(buttonStage8, buttonStage8 === 'check' ? handleButtonClick8 : handleClaim8, isLoading2)}
+          {renderButton(buttonStage8, 200, handleButtonClick8, isLoading2)}
         </li>
       </ul>
-      <div className="footer-container">
+      <div className={`footer-container ${isDarkMode ? 'dark-theme' : 'light-theme'}`}>
         <Link href="/">
           <a className="footer-link">
             <i className="fas fa-home footer-icon"></i>
