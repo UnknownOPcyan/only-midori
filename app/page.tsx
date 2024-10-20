@@ -21,7 +21,8 @@ export default function Home() {
   const [buttonStage2, setButtonStage2] = useState<'check' | 'claim' | 'claimed'>('check')
   const [buttonStage3, setButtonStage3] = useState<'check' | 'claim' | 'claimed'>('check')
   const [isLoading, setIsLoading] = useState(false)
-  const [farmInterval, setFarmInterval] = useState<NodeJS.Timeout | null>(null)
+  const [farmingStage, setFarmingStage] = useState<'farm' | 'farming' | 'claim'>('farm')
+  const [farmingTimer, setFarmingTimer] = useState<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
     if (typeof window !== 'undefined' && window.Telegram?.WebApp) {
@@ -59,6 +60,17 @@ export default function Home() {
     } else {
       setError('This app should be opened in Telegram')
     }
+
+    // Set up an interval to update the user's online status
+    const onlineInterval = setInterval(() => {
+      updateOnlineStatus()
+    }, 30000) // Update every 30 seconds
+
+    return () => {
+      clearInterval(onlineInterval)
+      if (farmingTimer) clearTimeout(farmingTimer)
+    }
+
   }, [])
 
   const handleIncreasePoints = async (pointsToAdd: number, buttonId: string) => {
@@ -85,51 +97,6 @@ export default function Home() {
     }
   }
 
-  const handleFarmClick = async () => {
-    if (!user) return;
-
-    if (!user.isFarming) {
-      try {
-        const res = await fetch('/api/farm-points', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ telegramId: user.telegramId, action: 'start' }),
-        });
-        const data = await res.json();
-        if (data.success) {
-          setUser({ ...user, isFarming: true, lastFarmTime: new Date() });
-          
-          // Set up interval to collect points
-          const interval = setInterval(async () => {
-            const collectRes = await fetch('/api/farm-points', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ telegramId: user.telegramId, action: 'collect' }),
-            });
-            const collectData = await collectRes.json();
-            
-            if (collectData.success) {
-              setUser(collectData.user);
-              if (!collectData.user.isFarming) {
-                if (farmInterval) {
-                  clearInterval(farmInterval);
-                  setFarmInterval(null);
-                }
-              }
-            }
-          }, 60000);
-          
-          setFarmInterval(interval);
-        }
-      } catch (error) {
-        console.error('Error starting farming:', error);
-      }
-    }
-  };
 
   const handleButtonClick1 = () => {
     if (buttonStage1 === 'check') {
@@ -177,18 +144,47 @@ export default function Home() {
     }
   }
 
-  // Clean up interval on unmount
-  useEffect(() => {
-    return () => {
-      if (farmInterval) {
-        clearInterval(farmInterval);
-      }
-    };
-  }, [farmInterval]);
-
-  if (error) {
-    return <div className="container mx-auto p-4 text-red-500">{error}</div>
+const updateOnlineStatus = async () => {
+  try {
+    await fetch('/api/update-online-status', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ telegramId: user.telegramId }),
+    })
+  } catch (error) {
+    console.error('Failed to update online status:', error)
   }
+}
+
+const handleFarmClick = async () => {
+  if (farmingStage === 'farm') {
+    setFarmingStage('farming')
+    try {
+      const res = await fetch('/api/start-farming', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ telegramId: user.telegramId }),
+      })
+      const data = await res.json()
+      if (data.success) {
+        const timer = setTimeout(() => {
+          setFarmingStage('claim')
+        }, 30000)
+        setFarmingTimer(timer)
+      }
+    } catch (error) {
+      console.error('Failed to start farming:', error)
+      setFarmingStage('farm')
+    }
+  } else if (farmingStage === 'claim') {
+    handleIncreasePoints(200, 'farmButton')
+    setFarmingStage('farm')
+  }
+}
 
   if (!user) return <div className="container mx-auto p-4">Loading...</div>
 
@@ -207,6 +203,7 @@ export default function Home() {
       handleClaim2={handleClaim2}
       handleClaim3={handleClaim3}
       handleFarmClick={handleFarmClick}
+      farmingStage={farmingStage}
     />
   )
 }
