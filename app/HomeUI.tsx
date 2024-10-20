@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { toggleUpdateText } from './utils';
 import './HomeUI.css';
@@ -36,6 +36,9 @@ export default function HomeUI({
   handleClaim3,
   handleFarmClick,
 }: HomeUIProps) {
+  const [farmingPoints, setFarmingPoints] = useState(0);
+  const [displayedPoints, setDisplayedPoints] = useState(0);
+
   useEffect(() => {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
@@ -43,6 +46,35 @@ export default function HomeUI({
     document.head.appendChild(link);
     toggleUpdateText();
   }, []);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (farmingStatus === 'farming') {
+      interval = setInterval(() => {
+        setFarmingPoints(prev => prev + 1);
+      }, 1000);
+    } else {
+      setFarmingPoints(0);
+    }
+    return () => clearInterval(interval);
+  }, [farmingStatus]);
+
+  useEffect(() => {
+    setDisplayedPoints(farmingPoints);
+  }, [farmingPoints]);
+
+  const FarmingPoints = ({ points }: { points: number }) => {
+    return (
+      <div className="farming-points">
+        <span className={`farming-point ${points === farmingPoints ? 'current' : 'exiting'}`}>
+          {points}
+        </span>
+        <span className={`farming-point ${points === farmingPoints ? 'entering' : 'current'}`}>
+          {points + 1}
+        </span>
+      </div>
+    );
+  };
 
   return (
     <div className="home-container">
@@ -84,37 +116,50 @@ export default function HomeUI({
             <p className="social-text">Follow Our Twitter!</p>
             <button
               onClick={() => {
-                handleButtonClick2();
-                handleClaim2();
+                if (buttonStage2 === 'check') {
+                  handleButtonClick2();
+                } else if (buttonStage2 === 'claim') {
+                  handleClaim2();
+                }
               }}
-              disabled={buttonStage2 === 'claimed'}
-              className="claim-button"
+              disabled={buttonStage2 === 'claimed' || isLoading}
+              className={`claim-button ${
+                buttonStage2 === 'claimed' || isLoading ? 'disabled' : ''
+              }`}
             >
-              {buttonStage2 === 'check' ? 'Check' : buttonStage2 === 'claim' ? 'Claim' : 'Claimed'}
+              {isLoading ? 'Claiming...' : buttonStage2 === 'check' ? 'Check' : buttonStage2 === 'claim' ? 'Claim' : 'Claimed'}
             </button>
           </div>
           <div className="social-container">
             <p className="social-text">Join Our Telegram!</p>
             <button
               onClick={() => {
-                handleButtonClick3();
-                handleClaim3();
+                if (buttonStage3 === 'check') {
+                  handleButtonClick3();
+                } else if (buttonStage3 === 'claim') {
+                  handleClaim3();
+                }
               }}
-              disabled={buttonStage3 === 'claimed'}
-              className="claim-button"
+              disabled={buttonStage3 === 'claimed' || isLoading}
+              className={`claim-button ${
+                buttonStage3 === 'claimed' || isLoading ? 'disabled' : ''
+              }`}
             >
-              {buttonStage3 === 'check' ? 'Check' : buttonStage3 === 'claim' ? 'Claim' : 'Claimed'}
+              {isLoading ? 'Claiming...' : buttonStage3 === 'check' ? 'Check' : buttonStage3 === 'claim' ? 'Claim' : 'Claimed'}
             </button>
           </div>
         </div>
       </div>
       <div className="flex-grow"></div>
       <button 
-        className="farm-button"
+        className={`farm-button ${farmingStatus === 'farming' ? 'farming' : ''}`}
         onClick={handleFarmClick}
         disabled={farmingStatus === 'farming'}
       >
-        {farmingStatus === 'farm' ? 'Farm PixelDogs' : farmingStatus === 'farming' ? 'Farming...' : 'Claim Farm'}
+        {farmingStatus === 'farm' ? 'Farm PixelDogs' : 
+         farmingStatus === 'farming' ? `Farming.` : 
+         'Claim Farm'}
+        {farmingStatus === 'farming' && <FarmingPoints points={displayedPoints} />}
       </button>
       {notification && (
         <div className="notification">
@@ -123,21 +168,21 @@ export default function HomeUI({
       )}
       <div className="footer-container">
         <Link href="/">
-          <a className="flex flex-col items-center text-gray-800">
-            <i className="fas fa-home text-2xl"></i>
-            <p className="text-sm">Home</p>
+          <a className="footer-link">
+            <i className="fas fa-home footer-icon"></i>
+            <p className="footer-text">Home</p>
           </a>
         </Link>
         <Link href="/invite">
-          <a className="flex flex-col items-center text-gray-800">
-            <i className="fas fa-users text-2xl"></i>
-            <p className="text-sm">Friends</p>
+          <a className="footer-link">
+            <i className="fas fa-users footer-icon"></i>
+            <p className="footer-text">Friends</p>
           </a>
         </Link>
         <Link href="/task">
-          <a className="flex flex-col items-center text-gray-800">
-            <i className="fas fa-clipboard text-2xl"></i>
-            <p className="text-sm">Tasks</p>
+          <a className="footer-link">
+            <i className="fas fa-clipboard footer-icon"></i>
+            <p className="footer-text">Tasks</p>
           </a>
         </Link>
       </div>
