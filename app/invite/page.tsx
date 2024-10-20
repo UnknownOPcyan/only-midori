@@ -97,8 +97,12 @@ export default function Invite() {
         </div>
 
         <button onClick={handleInvite} className={styles.inviteButton}>
-          Copy Invite Link
+          <span className={styles.buttonText}>Copy Invite Link</span>
+          <span className={styles.buttonIcon}>
+            <i className="fas fa-copy"></i> Copied
+          </span>
         </button>
+
 
         <div className={styles.invitedSection}>
           <div className={styles.invitedHeader}>
