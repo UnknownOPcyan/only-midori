@@ -82,6 +82,7 @@ export default function Invite() {
       </div>
     );
   }
+     return <div>Content goes here...</div>;
 };
 
 
