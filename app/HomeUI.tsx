@@ -8,6 +8,7 @@ interface HomeUIProps {
   buttonStage1: 'check' | 'claim' | 'claimed';
   buttonStage2: 'check' | 'claim' | 'claimed';
   buttonStage3: 'check' | 'claim' | 'claimed';
+  farmingStatus: 'farm' | 'farming' | 'claim';
   isLoading: boolean;
   notification: string;
   handleButtonClick1: () => void;
@@ -17,7 +18,6 @@ interface HomeUIProps {
   handleClaim2: () => void;
   handleClaim3: () => void;
   handleFarmClick: () => void;
-  farmingStage: 'farm' | 'farming' | 'claim';
 }
 
 export default function HomeUI({
@@ -25,6 +25,7 @@ export default function HomeUI({
   buttonStage1,
   buttonStage2,
   buttonStage3,
+  farmingStatus,
   isLoading,
   notification,
   handleButtonClick1,
@@ -34,9 +35,7 @@ export default function HomeUI({
   handleClaim2,
   handleClaim3,
   handleFarmClick,
-  farmingStage,
 }: HomeUIProps) {
-
   useEffect(() => {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
@@ -111,13 +110,17 @@ export default function HomeUI({
       </div>
       <div className="flex-grow"></div>
       <button 
-        className="farm-button" 
+        className="farm-button"
         onClick={handleFarmClick}
-        disabled={farmingStage === 'farming'}
+        disabled={farmingStatus === 'farming'}
       >
-        {farmingStage === 'farm' ? 'Farm PixelDogs' : 
-         farmingStage === 'farming' ? 'Farming...' : 'Claim Farm'}
+        {farmingStatus === 'farm' ? 'Farm PixelDogs' : farmingStatus === 'farming' ? 'Farming...' : 'Claim Farm'}
       </button>
+      {notification && (
+        <div className="notification">
+          {notification}
+        </div>
+      )}
       <div className="footer-container">
         <Link href="/">
           <a className="flex flex-col items-center text-gray-800">
