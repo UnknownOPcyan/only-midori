@@ -49,7 +49,9 @@ export async function POST(req: NextRequest) {
               username: userData.username || '',
               firstName: userData.first_name || '',
               lastName: userData.last_name || '',
-              invitedBy: `@${inviterInfo.username || inviterId}`
+              invitedBy: `@${inviterInfo.username || inviterId}`,
+              isOnline: true,
+              currentTime: new Date()
             }
           });
 
@@ -71,7 +73,9 @@ export async function POST(req: NextRequest) {
               telegramId: userData.id,
               username: userData.username || '',
               firstName: userData.first_name || '',
-              lastName: userData.last_name || ''
+              lastName: userData.last_name || '',
+              isOnline: true,
+              currentTime: new Date()
             }
           });
         }
@@ -81,10 +85,21 @@ export async function POST(req: NextRequest) {
             telegramId: userData.id,
             username: userData.username || '',
             firstName: userData.first_name || '',
-            lastName: userData.last_name || ''
+            lastName: userData.last_name || '',
+            isOnline: true,
+            currentTime: new Date()
           }
         });
       }
+    } else {
+      // Update user's online status and current time
+      user = await prisma.user.update({
+        where: { telegramId: userData.id },
+        data: {
+          isOnline: true,
+          currentTime: new Date()
+        }
+      });
     }
 
     let inviterInfo = null;
@@ -96,26 +111,18 @@ export async function POST(req: NextRequest) {
     }
 
     // Check farming status
-    let farmingStage = 'farm';
+    let farmingStatus = 'farm';
     if (user.startFarming) {
-      const timeDiff = new Date().getTime() - user.startFarming.getTime();
-      if (timeDiff < 30000) {
-        farmingStage = 'farming';
+      const now = new Date();
+      const timeDiff = now.getTime() - user.startFarming.getTime();
+      if (timeDiff < 30000) { // Less than 30 seconds
+        farmingStatus = 'farming';
       } else {
-        farmingStage = 'claim';
+        farmingStatus = 'claim';
       }
     }
 
-    // Update user's online status
-    await prisma.user.update({
-      where: { telegramId: userData.id },
-      data: { 
-        isOnline: true,
-        currentTime: new Date(),
-      }
-    });
-
-    return NextResponse.json({ user, inviterInfo, farmingStage });
+    return NextResponse.json({ user, inviterInfo, farmingStatus });
   } catch (error) {
     console.error('Error processing user data:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
