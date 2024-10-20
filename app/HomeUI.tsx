@@ -110,12 +110,18 @@ export default function HomeUI({
       </div>
       <div className="flex-grow"></div>
       <button 
-        className="farm-button"
-        onClick={handleFarmClick}
-        disabled={farmingStatus === 'farming'}
-      >
-        {farmingStatus === 'farm' ? 'Farm PixelDogs' : farmingStatus === 'farming' ? 'Farming...' : 'Claim Farm'}
-      </button>
+  className="farm-button"
+  onClick={handleFarmClick}
+  disabled={farmingStatus === 'farming'}
+>
+  {farmingStatus === 'farm' ? (
+    'Farm PixelDogs'
+  ) : farmingStatus === 'farming' ? (
+    'Farming...'
+  ) : (
+    <span className="claim-farm-text">Claim Farm</span>
+  )}
+</button>
       {notification && (
         <div className="notification">
           {notification}
