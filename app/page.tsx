@@ -121,7 +121,7 @@ export default function Home() {
                 }
               }
             }
-          }, 2000);
+          }, 60000);
           
           setFarmInterval(interval);
         }
