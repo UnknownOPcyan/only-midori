@@ -74,11 +74,14 @@ export default function Invite() {
     return <div className={styles.error}>{error}</div>
   }
 
- if (!user) return (
-  <div className="container mx-auto p-4">
-    <i className="fas fa-spinner fa-spin"></i>
-  </div>
-);
+ const LoadingComponent = ({ user }) => {
+  if (!user) {
+    return (
+      <div className="container mx-auto p-4">
+        <div className="loader"></div>
+      </div>
+    );
+  }
 
   return (
     <div className={`${styles.container} ${isDarkMode ? styles.darkMode : ''}`}>
