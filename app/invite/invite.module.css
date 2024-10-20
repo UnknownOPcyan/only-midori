@@ -6,13 +6,17 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: white;
+  background-color: #f0f0f0;
   color: black;
+  background-image: radial-gradient(rgba(0, 0, 0, 0.1) 2px, transparent 0);
+  background-size: 30px 30px;
+  background-position: -5px -5px;
 }
 
 .darkMode {
-  background-color: #121212;
+  background-color: #313131;
   color: white;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.171) 2px, transparent 0);
 }
 
 .content {
@@ -92,13 +96,13 @@
 }
 
 .invitedSection {
-  background-color: #f3f4f6;
+  background-color: rgba(243, 244, 246, 0.8);
   border-radius: 0.5rem;
   padding: 1rem;
 }
 
 .darkMode .invitedSection {
-  background-color: #2a2a2a;
+  background-color: rgba(42, 42, 42, 0.8);
 }
 
 .invitedHeader {
@@ -152,7 +156,7 @@
 }
 
 .footerContainer {
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.8);
   width: 100%;
   padding: 0.5rem;
   display: flex;
@@ -166,7 +170,7 @@
 }
 
 .darkMode .footerContainer {
-  background-color: #121212;
+  background-color: rgba(18, 18, 18, 0.8);
   box-shadow: 0 -2px 4px rgba(255, 255, 255, 0.1);
 }
 
