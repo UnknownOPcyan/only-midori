@@ -1,5 +1,3 @@
-// app/api/user/route.ts
-
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
@@ -22,8 +20,8 @@ export async function POST(req: NextRequest) {
         claimedButton1: true,
         claimedButton2: true,
         claimedButton3: true,
-        claimedButton5: true,
         claimedButton4: true,
+        claimedButton5: true,
         claimedButton6: true,
         claimedButton7: true,
         claimedButton8: true,
