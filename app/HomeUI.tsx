@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { toggleUpdateText } from './utils';
 import './HomeUI.css';
@@ -44,7 +44,6 @@ export default function HomeUI({
     document.head.appendChild(link);
     toggleUpdateText();
   }, []);
-
 
   return (
     <div className="home-container">
