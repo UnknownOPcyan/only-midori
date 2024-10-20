@@ -75,7 +75,7 @@ export default function Home() {
       }
     }
 
-    const interval = setInterval(updateOnlineStatus, 60000) // Update every minute
+    const interval = setInterval(updateOnlineStatus, 5000) // Update every minute
 
     return () => {
       clearInterval(interval)
