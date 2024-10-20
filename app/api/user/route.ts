@@ -1,3 +1,5 @@
+// app/api/user/route.ts
+
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
@@ -26,7 +28,10 @@ export async function POST(req: NextRequest) {
         claimedButton7: true,
         claimedButton8: true,
         invitedUsers: true,
-        invitedBy: true
+        invitedBy: true,
+        startFarming: true,
+        isOnline: true,
+        currentTime: true
       }
     });
 
@@ -92,7 +97,27 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    return NextResponse.json({ user, inviterInfo });
+    // Check farming status
+    let farmingStage = 'farm';
+    if (user.startFarming) {
+      const timeDiff = new Date().getTime() - user.startFarming.getTime();
+      if (timeDiff < 30000) {
+        farmingStage = 'farming';
+      } else {
+        farmingStage = 'claim';
+      }
+    }
+
+    // Update user's online status
+    await prisma.user.update({
+      where: { telegramId: userData.id },
+      data: { 
+        isOnline: true,
+        currentTime: new Date(),
+      }
+    });
+
+    return NextResponse.json({ user, inviterInfo, farmingStage });
   } catch (error) {
     console.error('Error processing user data:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
