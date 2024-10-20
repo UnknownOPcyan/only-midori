@@ -22,6 +22,7 @@ export default function Home() {
   const [buttonStage3, setButtonStage3] = useState<'check' | 'claim' | 'claimed'>('check')
   const [farmingStatus, setFarmingStatus] = useState<'farm' | 'farming' | 'claim'>('farm')
   const [isLoading, setIsLoading] = useState(false)
+  const [farmingPoints, setFarmingPoints] = useState(0)
 
   useEffect(() => {
     if (typeof window !== 'undefined' && window.Telegram?.WebApp) {
@@ -75,7 +76,7 @@ export default function Home() {
       }
     }
 
-    const interval = setInterval(updateOnlineStatus, 5000) // Update every minute
+    const interval = setInterval(updateOnlineStatus, 5000) // Update every 5 seconds
 
     return () => {
       clearInterval(interval)
@@ -146,14 +147,22 @@ export default function Home() {
         const data = await res.json()
         if (data.success) {
           setFarmingStatus('farming')
-          setTimeout(() => setFarmingStatus('claim'), 30000)
+          setFarmingPoints(0)
+          const farmingInterval = setInterval(() => {
+            setFarmingPoints(prev => prev + 1)
+          }, 1000)
+          setTimeout(() => {
+            clearInterval(farmingInterval)
+            setFarmingStatus('claim')
+          }, 30000)
         }
       } catch (error) {
         console.error('Error starting farming:', error)
       }
     } else if (farmingStatus === 'claim') {
-      handleIncreasePoints(200, 'farmButton')
+      handleIncreasePoints(farmingPoints, 'farmButton')
       setFarmingStatus('farm')
+      setFarmingPoints(0)
     }
   }
 
