@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import './TaskUI.css';
@@ -55,12 +54,34 @@ export default function TaskUI({
       const tg = window.Telegram.WebApp;
       setIsDarkMode(tg.colorScheme === 'dark');
 
-      // Listen for theme changes
       tg.onEvent('themeChanged', () => {
         setIsDarkMode(tg.colorScheme === 'dark');
       });
     }
   }, []);
+
+  const renderButton = (stage: 'check' | 'claim' | 'claimed', onClick: () => void, isLoading: boolean) => {
+    let content;
+    if (isLoading) {
+      content = 'Claiming...';
+    } else if (stage === 'check') {
+      content = '+200';
+    } else if (stage === 'claim') {
+      content = 'Claim';
+    } else {
+      content = 'Claimed';
+    }
+
+    return (
+      <button
+        onClick={onClick}
+        disabled={stage === 'claimed' || isLoading}
+        className={stage === 'claim' ? 'slide-up' : ''}
+      >
+        {content}
+      </button>
+    );
+  };
 
   return (
     <div className={`task-page ${isDarkMode ? 'dark-theme' : 'light-theme'}`}>
@@ -70,109 +91,60 @@ export default function TaskUI({
         </div>
       </div>
       <div className="task-icon-container">
-    <div className="task-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <div className="task-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M9 11l3 3L22 4"></path>
             <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-        </svg>
-    </div>
-</div>
+          </svg>
+        </div>
+      </div>
       <div className="description">
         Complete the following tasks<br />and increase PG
       </div>
       <ul className="task-list">
-      <li>
+        <li>
           <i className="fab fa-youtube"></i>
           <span>Subscribe PG YouTube channel :</span>
-          <button
-            onClick={() => {
-              if (buttonStage1 === 'check') {
-                handleButtonClick4();
-              } else if (buttonStage1 === 'claim') {
-                handleClaim4();
-              }
-            }}
-            disabled={buttonStage1 === 'claimed' || isLoading}
-          >
-            {isLoading ? 'Claiming...' : buttonStage1 === 'check' ? '+200' : buttonStage1 === 'claim' ? 'Claim' : 'Claimed'}
-          </button>
+          {renderButton(buttonStage1, buttonStage1 === 'check' ? handleButtonClick4 : handleClaim4, isLoading)}
         </li>
         <li>
           <i className="fab fa-telegram-plane"></i>
           <span>Subscribe PG Telegram Channel :</span>
-          <button
-            onClick={() => {
-              handleButtonClick6();
-              handleClaim6();
-            }}
-            disabled={buttonStage3 === 'claimed'}
-          >
-            {buttonStage3 === 'check' ? '+200' : buttonStage3 === 'claim' ? 'Claim' : 'Claimed'}
-          </button>
+          {renderButton(buttonStage3, buttonStage3 === 'check' ? handleButtonClick6 : handleClaim6, false)}
         </li>
         <li>
           <i className="fab fa-twitter"></i>
           <span>Follow PG's X Handle :</span>
-          <button
-            onClick={() => {
-              handleButtonClick5();
-              handleClaim5();
-            }}
-            disabled={buttonStage2 === 'claimed'}
-          >
-            {buttonStage2 === 'check' ? '+200' : buttonStage2 === 'claim' ? 'Claim' : 'Claimed'}
-          </button>
+          {renderButton(buttonStage2, buttonStage2 === 'check' ? handleButtonClick5 : handleClaim5, false)}
         </li>
         <li>
           <i className="fab fa-discord"></i>
           <span>Join PG's Discord Server :</span>
-          <button
-            onClick={() => {
-              if (buttonStage7 === 'check') {
-                handleButtonClick7();
-              } else if (buttonStage7 === 'claim') {
-                handleClaim7();
-              }
-            }}
-            disabled={buttonStage7 === 'claimed' || isLoading1}
-          >
-            {isLoading1 ? 'Claiming...' : buttonStage7 === 'check' ? '+200' : buttonStage7 === 'claim' ? 'Claim' : 'Claimed'}
-          </button>
+          {renderButton(buttonStage7, buttonStage7 === 'check' ? handleButtonClick7 : handleClaim7, isLoading1)}
         </li>
         <li>
           <i className="fab fa-instagram"></i>
           <span>Follow PG Instagram Handle :</span>
-          <button
-            onClick={() => {
-              if (buttonStage8 === 'check') {
-                handleButtonClick8();
-              } else if (buttonStage8 === 'claim') {
-                handleClaim8();
-              }
-            }}
-            disabled={buttonStage8 === 'claimed' || isLoading2}
-          >
-            {isLoading2 ? 'Claiming...' : buttonStage8 === 'check' ? '+200' : buttonStage8 === 'claim' ? 'Claim' : 'Claimed'}
-          </button>
+          {renderButton(buttonStage8, buttonStage8 === 'check' ? handleButtonClick8 : handleClaim8, isLoading2)}
         </li>
       </ul>
       <div className="footer-container">
         <Link href="/">
-          <a className="flex flex-col items-center text-gray-800">
-            <i className="fas fa-home text-2xl"></i>
-            <p className="text-sm">Home</p>
+          <a className="footer-link">
+            <i className="fas fa-home footer-icon"></i>
+            <p className="footer-text">Home</p>
           </a>
         </Link>
         <Link href="/invite">
-          <a className="flex flex-col items-center text-gray-800">
-            <i className="fas fa-users text-2xl"></i>
-            <p className="text-sm">Friends</p>
+          <a className="footer-link">
+            <i className="fas fa-users footer-icon"></i>
+            <p className="footer-text">Friends</p>
           </a>
         </Link>
         <Link href="/task">
-          <a className="flex flex-col items-center text-gray-800">
-            <i className="fas fa-clipboard text-2xl"></i>
-            <p className="text-sm">Tasks</p>
+          <a className="footer-link active-nav">
+            <i className="fas fa-clipboard footer-icon"></i>
+            <p className="footer-text">Tasks</p>
           </a>
         </Link>
       </div>
