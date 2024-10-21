@@ -43,6 +43,7 @@ export default function HomeUI({
   const [farmingPoints, setFarmingPoints] = useState(0);
   const [currentNumber, setCurrentNumber] = useState(0);
   const [isSliding, setIsSliding] = useState(false);
+  const [isClaimAnimating, setIsClaimAnimating] = useState(false);
 
   useEffect(() => {
     const link = document.createElement('link');
@@ -69,6 +70,14 @@ export default function HomeUI({
     }
     return () => clearInterval(interval);
   }, [farmingStatus]);
+
+  const handleClaimClick = () => {
+    setIsClaimAnimating(true);
+    handleFarmClick();
+    setTimeout(() => {
+      setIsClaimAnimating(false);
+    }, 1000);
+  };
 
   const renderContent = () => {
     if (isInitialLoading) {
@@ -151,9 +160,9 @@ export default function HomeUI({
         </div>
         <div className="flex-grow"></div>
         <button
-          className={`farm-button ${farmingStatus === 'farming' ? 'farming' : ''}`}
-          onClick={handleFarmClick}
-          disabled={farmingStatus === 'farming'}
+          className={`farm-button ${farmingStatus === 'farming' ? 'farming' : ''} ${isClaimAnimating ? 'claim-animating' : ''}`}
+          onClick={farmingStatus === 'claim' ? handleClaimClick : handleFarmClick}
+          disabled={farmingStatus === 'farming' || isClaimAnimating}
         >
           {farmingStatus === 'farm' ? (
             <span className="claimFarms">Farm PixelDogs</span>
