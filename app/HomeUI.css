@@ -171,6 +171,9 @@
 
 /* Farming Points Animation */
 .farming-points {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: baseline;
   display: inline-block;
   position: relative;
   overflow: hidden;
@@ -180,6 +183,8 @@
 }
 
 .farming-points-number {
+  display: flex;
+  align-items: center;
   animation: slideIn 0.5s ease-out;
   height: 1.5em;
   left: 0;
