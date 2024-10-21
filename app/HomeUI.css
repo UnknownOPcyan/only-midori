@@ -110,16 +110,16 @@
 
 /* Farm Button Styles */
 .farm-button {
-  background-color: #4CAF50;
+  background-color: #2d3748;
   color: white;
   width: 75%;
   padding: 1rem;
   border-radius: 1rem;
   margin-bottom: 1.5rem;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 1.25rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease;
+  transition: all 0.3s;
   position: fixed;
   bottom: 65px;
   left: 50%;
@@ -130,37 +130,42 @@
   pointer-events: auto;
 }
 
-.farm-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.7;
-}
-
 .farm-button.farming {
   background-color: #4CAF50;
+  color: white;
+  font-weight: bold;
   animation: pulse 2s infinite;
 }
 
-/* Farming Points Animation */
+.farm-button.claim {
+  background-color: #4CAF50;
+  color: white;
+  font-weight: bold;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Farming points animation */
 .farming-points {
   display: inline-block;
   position: relative;
-  overflow: hidden;
-  height: 1.5em;
-  margin-left: 5px;
   min-width: 40px;
 }
 
-.farming-points-number {
+.farming-points-enter {
   position: absolute;
-  animation: slideIn 0.5s ease-out;
+  right: -20px;
+  opacity: 0;
+  animation: slideInFromRight 1s forwards;
+}
+
+.farming-points-exit {
+  position: absolute;
   left: 0;
+  animation: slideOutToLeft 1s forwards;
 }
 
-.farming-points-number.sliding-out {
-  animation: slideOut 0.5s ease-in;
-}
-
-@keyframes slideIn {
+@keyframes slideInFromRight {
   0% {
     transform: translateX(100%);
     opacity: 0;
@@ -171,7 +176,7 @@
   }
 }
 
-@keyframes slideOut {
+@keyframes slideOutToLeft {
   0% {
     transform: translateX(0);
     opacity: 1;
@@ -182,19 +187,7 @@
   }
 }
 
-@keyframes pulse {
-  0% {
-    transform: translateX(-50%) scale(1);
-  }
-  50% {
-    transform: translateX(-50%) scale(1.05);
-  }
-  100% {
-    transform: translateX(-50%) scale(1);
-  }
-}
-
-/* Claim Farm Animation */
+/* Cool button animation */
 .farm-button.claim {
   position: relative;
   padding: 10px 22px;
@@ -202,7 +195,7 @@
   border: none;
   color: white;
   cursor: pointer;
-  background-color: transparent;
+  background-color: #4CAF50;
   transition: all 0.2s ease;
 }
 
@@ -255,7 +248,7 @@
   }
 }
 
-.farm-button.claim:active::after {
+.farm-button.claim:active:after {
   bottom: -70%;
   background-image: radial-gradient(circle, #7d2ae8 20%, transparent 20%),
     radial-gradient(circle, #7d2ae8 20%, transparent 20%),
