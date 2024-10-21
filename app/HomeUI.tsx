@@ -132,24 +132,28 @@ export default function HomeUI({
       </div>
       <div className="flex-grow"></div>
       <button 
-  className={`farm-button ${farmingStatus}`}
-  onClick={handleFarmClick}
-  disabled={farmingStatus === 'farming'}
->
-  {farmingStatus === 'farm' 
-    ? 'Farm PixelDogs' 
-    : farmingStatus === 'farming' 
-    ? <span>
-        Farming...(
-        <span className="farming-points">
-          <span className="farming-points-enter">{farmingPoints}</span>
-        </span>
-        )
-      </span>
-    : farmingStatus === 'claim'
-    ? 'Claim Farm'
-    : ''}
-</button>
+        className={`farm-button ${farmingStatus === 'farming' ? 'farming' : ''}`}
+        onClick={handleFarmClick}
+        disabled={farmingStatus === 'farming'}
+      >
+        {farmingStatus === 'farm' ? (
+          <span className="claimFarm">Farm PixelDogs</span>
+        ) : farmingStatus === 'farming' ? (
+          <>
+            Farming
+            <div className="farming-points">
+              <span 
+                className={`farming-points-number ${isSliding ? 'sliding-out' : ''}`}
+                key={currentNumber}
+              >
+                .{farmingPoints}
+              </span>
+            </div>
+          </>
+        ) : (
+          <span className="claimFarm">Claim Farm</span>
+        )}
+      </button>
       {notification && (
         <div className="notification-banner">
           {notification}
