@@ -137,7 +137,7 @@ export default function HomeUI({
         disabled={farmingStatus === 'farming'}
       >
         {farmingStatus === 'farm' ? (
-          <span className="claimFarm">Farm PixelDogs</span>
+          <span className="claimFarms">Farm PixelDogs</span>
         ) : farmingStatus === 'farming' ? (
           <>
             Farming
