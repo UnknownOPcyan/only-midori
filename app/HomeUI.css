@@ -118,115 +118,64 @@
   font-weight: 500;
 }
 
-/* ... (keep existing styles) ... */
-
-/* Updated Claim Button Styles */
 .claim-button {
-  background-color: #4CAF50;
-  color: white;
-  font-weight: bold;
+  background-color: #e2e8f0;
+  color: black;
   padding: 0.5rem 1rem;
   border-radius: 1rem;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s;
+}
+
+.claim-button:hover:not(.disabled) {
+  background-color: #cbd5e0;
+}
+
+.claim-button.disabled {
+  cursor: not-allowed;
+  background-color: #e2e8f0;
+}
+
+/* Farm Button Styles */
+.farm-button {
+  background-color: #4CAF50;
+  color: white;
+  width: 75%;
+  padding: 1rem;
+  border-radius: 1rem;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  font-size: 1.25rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
-  position: relative;
-  cursor: pointer;
-}
-
-.claim-button:hover {
-  background-color: #45a049;
-}
-
-.claim-button:active {
-  transform: scale(0.96);
-}
-
-.claim-button:before,
-.claim-button:after {
-  content: "";
-  position: absolute;
-  width: 150%;
+  position: fixed;
+  bottom: 65px;
   left: 50%;
-  height: 100%;
   transform: translateX(-50%);
-  z-index: -1000;
-  background-repeat: no-repeat;
+  z-index: 1000;
+  cursor: pointer;
+  opacity: 1;
+  pointer-events: auto;
 }
 
-.claim-button:active:before {
-  top: -70%;
-  background-image: radial-gradient(circle, #4CAF50 20%, transparent 20%),
-    radial-gradient(circle, transparent 20%, #4CAF50 20%, transparent 30%),
-    radial-gradient(circle, #4CAF50 20%, transparent 20%),
-    radial-gradient(circle, #4CAF50 20%, transparent 20%),
-    radial-gradient(circle, transparent 10%, #4CAF50 15%, transparent 20%),
-    radial-gradient(circle, #4CAF50 20%, transparent 20%),
-    radial-gradient(circle, #4CAF50 20%, transparent 20%),
-    radial-gradient(circle, #4CAF50 20%, transparent 20%),
-    radial-gradient(circle, #4CAF50 20%, transparent 20%);
-  background-size: 10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%, 10% 10%, 15% 15%,
-    10% 10%, 18% 18%;
-  background-position: 50% 120%;
-  animation: greentopBubbles 0.6s ease;
+.farm-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 
-@keyframes greentopBubbles {
-  0% {
-    background-position: 5% 90%, 10% 90%, 10% 90%, 15% 90%, 25% 90%, 25% 90%,
-      40% 90%, 55% 90%, 70% 90%;
-  }
-  50% {
-    background-position: 0% 80%, 0% 20%, 10% 40%, 20% 0%, 30% 30%, 22% 50%,
-      50% 50%, 65% 20%, 90% 30%;
-  }
-  100% {
-    background-position: 0% 70%, 0% 10%, 10% 30%, 20% -10%, 30% 20%, 22% 40%,
-      50% 40%, 65% 10%, 90% 20%;
-    background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
-  }
+.farm-button.farming {
+  background-color: #4CAF50;
+  animation: pulse 2s infinite;
 }
 
-.claim-button:active:after {
-  bottom: -70%;
-  background-image: radial-gradient(circle, #4CAF50 20%, transparent 20%),
-    radial-gradient(circle, #4CAF50 20%, transparent 20%),
-    radial-gradient(circle, transparent 10%, #4CAF50 15%, transparent 20%),
-    radial-gradient(circle, #4CAF50 20%, transparent 20%),
-    radial-gradient(circle, #4CAF50 20%, transparent 20%),
-    radial-gradient(circle, #4CAF50 20%, transparent 20%),
-    radial-gradient(circle, #4CAF50 20%, transparent 20%);
-  background-size: 15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 20% 20%, 18% 18%;
-  background-position: 50% 0%;
-  animation: greenbottomBubbles 0.6s ease;
+.farm-button.claim-animating {
+  pointer-events: none;
 }
 
-@keyframes greenbottomBubbles {
-  0% {
-    background-position: 10% -10%, 30% 10%, 55% -10%, 70% -10%, 85% -10%,
-      70% -10%, 70% 0%;
-  }
-  50% {
-    background-position: 0% 80%, 20% 80%, 45% 60%, 60% 100%, 75% 70%, 95% 60%,
-      105% 0%;
-  }
-  100% {
-    background-position: 0% 90%, 20% 90%, 45% 70%, 60% 110%, 75% 80%, 95% 70%,
-      110% 10%;
-    background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
-  }
-}
-
-/* Updated Farming Button Styles */
-.farm-button {
-  /* ... (keep existing styles) ... */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
+/* Farming Points Animation */
 .farming-points {
-  display: inline-flex;
-  align-items: center;
+  display: inline-block;
   position: relative;
   overflow: hidden;
   height: 1.5em;
@@ -235,12 +184,78 @@
 }
 
 .farming-points-number {
-  position: absolute;
-  animation: slideIn 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  animation: slideIn 0.5s ease-out;
+  height: 1.5em;
+  left: 0;
 }
 
 .farming-points-number.sliding-out {
-  animation: slideOut 0.5s cubic-bezier(0.55, 0.085, 0.68, 0.53);
+  animation: slideOut 0.5s ease-in;
+}
+
+/* Claim Farm Animation */
+.claimFarm {
+  position: relative;
+  padding: 10px 22px;
+  border-radius: 6px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  background-color: transparent;
+  transition: all 0.2s ease;
+  display: inline-block;
+  animation: claimPop 0.6s ease-out;
+}
+
+.claimFarm:active {
+  transform: scale(0.96);
+}
+
+.farm-button.claim-animating .claimFarm {
+  animation: claimPopAndFade 1s ease-out;
+}
+
+.claimFarm:active:before,
+.claimFarm:active:after {
+  position: absolute;
+  content: "";
+  width: 150%;
+  left: 50%;
+  height: 100%;
+  transform: translateX(-50%);
+  z-index: -1000;
+  background-repeat: no-repeat;
+}
+
+.claimFarm:active:before {
+  top: -70%;
+  background-image: radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+    radial-gradient(circle, transparent 20%, #7d2ae8 20%, transparent 30%),
+    radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+    radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+    radial-gradient(circle, transparent 10%, #7d2ae8 15%, transparent 20%),
+    radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+    radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+    radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+    radial-gradient(circle, #7d2ae8 20%, transparent 20%);
+  background-size: 10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%, 10% 10%, 15% 15%,
+    10% 10%, 18% 18%;
+  background-position: 50% 120%;
+  animation: greentopBubbles 0.6s ease;
+}
+
+.claimFarm:active::after {
+  bottom: -70%;
+  background-image: radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+    radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+    radial-gradient(circle, transparent 10%, #7d2ae8 15%, transparent 20%),
+    radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+    radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+    radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+    radial-gradient(circle, #7d2ae8 20%, transparent 20%);
+  background-size: 15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 20% 20%, 18% 18%;
+  background-position: 50% 0%;
+  animation: greenbottomBubbles 0.6s ease;
 }
 
 @keyframes slideIn {
@@ -277,49 +292,32 @@
   }
 }
 
-/* Claim Farm Animation */
-.claimFarm {
-  position: relative;
-  padding: 10px 22px;
-  border-radius: 6px;
-  border: none;
-  color: white;
-  cursor: pointer;
-  background-color: transparent;
-  transition: all 0.2s ease;
+@keyframes claimPop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
 }
 
-.claimFarm:active {
-  transform: scale(0.96);
-}
-
-.claimFarm:active:before,
-.claimFarm:active:after {
-  position: absolute;
-  content: "";
-  width: 150%;
-  left: 50%;
-  height: 100%;
-  transform: translateX(-50%);
-  z-index: -1000;
-  background-repeat: no-repeat;
-}
-
-.claimFarm:active:before {
-  top: -70%;
-  background-image: radial-gradient(circle, #7d2ae8 20%, transparent 20%),
-    radial-gradient(circle, transparent 20%, #7d2ae8 20%, transparent 30%),
-    radial-gradient(circle, #7d2ae8 20%, transparent 20%),
-    radial-gradient(circle, #7d2ae8 20%, transparent 20%),
-    radial-gradient(circle, transparent 10%, #7d2ae8 15%, transparent 20%),
-    radial-gradient(circle, #7d2ae8 20%, transparent 20%),
-    radial-gradient(circle, #7d2ae8 20%, transparent 20%),
-    radial-gradient(circle, #7d2ae8 20%, transparent 20%),
-    radial-gradient(circle, #7d2ae8 20%, transparent 20%);
-  background-size: 10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%, 10% 10%, 15% 15%,
-    10% 10%, 18% 18%;
-  background-position: 50% 120%;
-  animation: greentopBubbles 0.6s ease;
+@keyframes claimPopAndFade {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
 }
 
 @keyframes greentopBubbles {
@@ -336,20 +334,6 @@
       50% 40%, 65% 10%, 90% 20%;
     background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
   }
-}
-
-.claimFarm:active::after {
-  bottom: -70%;
-  background-image: radial-gradient(circle, #7d2ae8 20%, transparent 20%),
-    radial-gradient(circle, #7d2ae8 20%, transparent 20%),
-    radial-gradient(circle, transparent 10%, #7d2ae8 15%, transparent 20%),
-    radial-gradient(circle, #7d2ae8 20%, transparent 20%),
-    radial-gradient(circle, #7d2ae8 20%, transparent 20%),
-    radial-gradient(circle, #7d2ae8 20%, transparent 20%),
-    radial-gradient(circle, #7d2ae8 20%, transparent 20%);
-  background-size: 15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 20% 20%, 18% 18%;
-  background-position: 50% 0%;
-  animation: greenbottomBubbles 0.6s ease;
 }
 
 @keyframes greenbottomBubbles {
