@@ -68,8 +68,15 @@ export default function HomeUI({
 
   return (
     <div className="home-container">
-      {!user ? (
-        <div className="loader"></div>
+      <div className="home-container">
+      {isInitialLoading ? (
+        <div className="content-area">
+          <div className="loader"></div>
+        </div>
+      ) : error ? (
+        <div className="content-area">
+          <div className="error">{error}</div>
+        </div>
       ) : (
         <>
           <div className="header-container">
