@@ -174,7 +174,7 @@
   display: inline-block;
   position: relative;
   overflow: hidden;
-  height: 0em;
+  height: 1.5em;
   margin-left: 5px;
   min-width: 40px;
 }
@@ -182,6 +182,7 @@
 .farming-points-number {
   position: absolute;
   animation: slideIn 0.5s ease-out;
+  height: 1.5em;
   left: 0;
 }
 
