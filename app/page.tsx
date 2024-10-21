@@ -212,6 +212,8 @@ export default function Home() {
       farmingStatus={farmingStatus}
       isLoading={isLoading}
       notification={notification}
+      error={error}
+      isInitialLoading={!user}
       handleButtonClick1={handleButtonClick1}
       handleButtonClick2={handleButtonClick2}
       handleButtonClick3={handleButtonClick3}
