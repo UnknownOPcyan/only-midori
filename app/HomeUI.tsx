@@ -70,101 +70,115 @@ export default function HomeUI({
     return () => clearInterval(interval);
   }, [farmingStatus]);
 
-  return (
-    <div className="home-container">
-      {isInitialLoading ? (
+  const renderContent = () => {
+    if (isInitialLoading) {
+      return (
         <div className="content-area">
           <div className="loader"></div>
         </div>
-      ) : error ? (
+      );
+    }
+
+    if (error) {
+      return (
         <div className="content-area">
           <div className="error">{error}</div>
         </div>
-      ) : (
-        <>
-          <div className="header-container">
-            <div className="dog-image-container">
-              <img
-                alt="Animated style dog image"
-                className="dog-image"
-                src="https://storage.googleapis.com/a1aa/image/YlpvEfbklKRiDi8LX5Rww5U3zZZwHEUfju1qUNknpEZ6e2OnA.jpg"
-              />
+      );
+    }
+
+    return (
+      <>
+        <div className="header-container">
+          <div className="dog-image-container">
+            <img
+              alt="Animated style dog image"
+              className="dog-image"
+              src="https://storage.googleapis.com/a1aa/image/YlpvEfbklKRiDi8LX5Rww5U3zZZwHEUfju1qUNknpEZ6e2OnA.jpg"
+            />
+          </div>
+          <p id="pixelDogsCount" className="pixel-dogs-count">
+            {user.points} PixelDogs
+          </p>
+          <p id="updateText" className="update-text fade fade-in">
+            Exciting updates are on the way :)
+          </p>
+          <div className="tasks-container">
+            <button className="tasks-button">Daily Tasks..!</button>
+            <div className="social-container">
+              <p className="social-text">Follow Our Youtube!</p>
+              <button
+                onClick={() => {
+                  if (buttonStage1 === 'check') {
+                    handleButtonClick1();
+                  } else if (buttonStage1 === 'claim') {
+                    handleClaim1();
+                  }
+                }}
+                disabled={buttonStage1 === 'claimed' || isLoading}
+                className={`claim-button ${buttonStage1 === 'claimed' || isLoading ? 'disabled' : ''}`}
+              >
+                {isLoading ? 'Claiming...' : buttonStage1 === 'check' ? 'Check' : buttonStage1 === 'claim' ? 'Claim' : 'Claimed'}
+              </button>
             </div>
-            <p id="pixelDogsCount" className="pixel-dogs-count">
-              {user.points} PixelDogs
-            </p>
-            <p id="updateText" className="update-text fade fade-in">
-              Exciting updates are on the way :)
-            </p>
-            <div className="tasks-container">
-              <button className="tasks-button">Daily Tasks..!</button>
-              <div className="social-container">
-                <p className="social-text">Follow Our Youtube!</p>
-                <button
-                  onClick={() => {
-                    if (buttonStage1 === 'check') {
-                      handleButtonClick1();
-                    } else if (buttonStage1 === 'claim') {
-                      handleClaim1();
-                    }
-                  }}
-                  disabled={buttonStage1 === 'claimed' || isLoading}
-                  className={`claim-button ${buttonStage1 === 'claimed' || isLoading ? 'disabled' : ''}`}
-                >
-                  {isLoading ? 'Claiming...' : buttonStage1 === 'check' ? 'Check' : buttonStage1 === 'claim' ? 'Claim' : 'Claimed'}
-                </button>
-              </div>
-              <div className="social-container">
-                <p className="social-text">Follow Our Twitter!</p>
-                <button
-                  onClick={() => {
-                    handleButtonClick2();
-                    handleClaim2();
-                  }}
-                  disabled={buttonStage2 === 'claimed'}
-                  className="claim-button"
-                >
-                  {buttonStage2 === 'check' ? 'Check' : buttonStage2 === 'claim' ? 'Claim' : 'Claimed'}
-                </button>
-              </div>
-              <div className="social-container">
-                <p className="social-text">Join Our Telegram!</p>
-                <button
-                  onClick={() => {
-                    handleButtonClick3();
-                    handleClaim3();
-                  }}
-                  disabled={buttonStage3 === 'claimed'}
-                  className="claim-button"
-                >
-                  {buttonStage3 === 'check' ? 'Check' : buttonStage3 === 'claim' ? 'Claim' : 'Claimed'}
-                </button>
-              </div>
+            <div className="social-container">
+              <p className="social-text">Follow Our Twitter!</p>
+              <button
+                onClick={() => {
+                  handleButtonClick2();
+                  handleClaim2();
+                }}
+                disabled={buttonStage2 === 'claimed'}
+                className="claim-button"
+              >
+                {buttonStage2 === 'check' ? 'Check' : buttonStage2 === 'claim' ? 'Claim' : 'Claimed'}
+              </button>
+            </div>
+            <div className="social-container">
+              <p className="social-text">Join Our Telegram!</p>
+              <button
+                onClick={() => {
+                  handleButtonClick3();
+                  handleClaim3();
+                }}
+                disabled={buttonStage3 === 'claimed'}
+                className="claim-button"
+              >
+                {buttonStage3 === 'check' ? 'Check' : buttonStage3 === 'claim' ? 'Claim' : 'Claimed'}
+              </button>
             </div>
           </div>
-          <div className="flex-grow"></div>
-          <button
-            className={`farm-button ${farmingStatus === 'farming' ? 'farming' : ''}`}
-            onClick={handleFarmClick}
-            disabled={farmingStatus === 'farming'}
-          >
-            {farmingStatus === 'farm' ? (
-              <span className="claimFarms">Farm PixelDogs</span>
-            ) : farmingStatus === 'farming' ? (
-              <>
-                Farming
-                <div className="farming-points">
-                  <span className={`farming-points-number ${isSliding ? 'sliding-out' : ''}`} key={currentNumber}>
-                    {farmingPoints}
-                  </span>
-                </div>
-              </>
-            ) : (
-              <span className="claimFarm">Claim Farm</span>
-            )}
-          </button>
-          {notification && <div className="notification-banner">{notification}</div>}
-           <div className="footer-container">
+        </div>
+        <div className="flex-grow"></div>
+        <button
+          className={`farm-button ${farmingStatus === 'farming' ? 'farming' : ''}`}
+          onClick={handleFarmClick}
+          disabled={farmingStatus === 'farming'}
+        >
+          {farmingStatus === 'farm' ? (
+            <span className="claimFarms">Farm PixelDogs</span>
+          ) : farmingStatus === 'farming' ? (
+            <>
+              Farming
+              <div className="farming-points">
+                <span className={`farming-points-number ${isSliding ? 'sliding-out' : ''}`} key={currentNumber}>
+                  {farmingPoints}
+                </span>
+              </div>
+            </>
+          ) : (
+            <span className="claimFarm">Claim Farm</span>
+          )}
+        </button>
+        {notification && <div className="notification-banner">{notification}</div>}
+      </>
+    );
+  };
+
+  return (
+    <div className="home-container">
+      {renderContent()}
+      <div className="footer-container">
         <Link href="/">
           <div className="footer-link active-link">
             <i className="fas fa-home footer-icon"></i>
@@ -184,8 +198,6 @@ export default function HomeUI({
           </div>
         </Link>
       </div>
-        </>
-      )}
     </div>
   );
 }
