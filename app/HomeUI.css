@@ -195,7 +195,7 @@
 }
 
 /* Claim Farm Animation */
-.claimFarm {
+.farm-button.claim {
   position: relative;
   padding: 10px 22px;
   border-radius: 6px;
@@ -206,12 +206,12 @@
   transition: all 0.2s ease;
 }
 
-.claimFarm:active {
+.farm-button.claim:active {
   transform: scale(0.96);
 }
 
-.claimFarm:active:before,
-.claimFarm:active:after {
+.farm-button.claim:active:before,
+.farm-button.claim:active:after {
   position: absolute;
   content: "";
   width: 150%;
@@ -222,7 +222,7 @@
   background-repeat: no-repeat;
 }
 
-.claimFarm:active:before {
+.farm-button.claim:active:before {
   top: -70%;
   background-image: radial-gradient(circle, #7d2ae8 20%, transparent 20%),
     radial-gradient(circle, transparent 20%, #7d2ae8 20%, transparent 30%),
@@ -255,7 +255,7 @@
   }
 }
 
-.claimFarm:active::after {
+.farm-button.claim:active::after {
   bottom: -70%;
   background-image: radial-gradient(circle, #7d2ae8 20%, transparent 20%),
     radial-gradient(circle, #7d2ae8 20%, transparent 20%),
