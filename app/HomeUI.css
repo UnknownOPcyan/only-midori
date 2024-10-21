@@ -180,7 +180,6 @@
 }
 
 .farming-points-number {
-  position: absolute;
   animation: slideIn 0.5s ease-out;
   height: 1.5em;
   left: 0;
