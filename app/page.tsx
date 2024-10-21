@@ -22,6 +22,7 @@ export default function Home() {
   const [buttonStage3, setButtonStage3] = useState<'check' | 'claim' | 'claimed'>('check')
   const [farmingStatus, setFarmingStatus] = useState<'farm' | 'farming' | 'claim'>('farm')
   const [isLoading, setIsLoading] = useState(false)
+   const [isInitialLoading, setIsInitialLoading] = useState(true)
 
   useEffect(() => {
     if (typeof window !== 'undefined' && window.Telegram?.WebApp) {
