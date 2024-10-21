@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { toggleUpdateText } from './utils';
 import './HomeUI.css';
 
+
 interface HomeUIProps {
   user: any;
   buttonStage1: 'check' | 'claim' | 'claimed';
