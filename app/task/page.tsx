@@ -16,14 +16,8 @@ export default function Home() {
   const [user, setUser] = useState<any>(null)
   const [error, setError] = useState<string | null>(null)
   const [notification, setNotification] = useState('')
-  const [buttonStage1, setButtonStage1] = useState<'check' | 'claim' | 'claimed'>('check')
-  const [buttonStage2, setButtonStage2] = useState<'check' | 'claim' | 'claimed'>('check')
-  const [buttonStage3, setButtonStage3] = useState<'check' | 'claim' | 'claimed'>('check')
-  const [buttonStage7, setButtonStage7] = useState<'check' | 'claim' | 'claimed'>('check')
-  const [buttonStage8, setButtonStage8] = useState<'check' | 'claim' | 'claimed'>('check')
-  const [isLoading, setIsLoading] = useState(false)
-  const [isLoading1, setIsLoading1] = useState(false)
-  const [isLoading2, setIsLoading2] = useState(false)
+  const [buttonStages, setButtonStages] = useState<{ [key: string]: 'check' | 'claim' | 'claimed' }>({})
+  const [isLoading, setIsLoading] = useState<{ [key: string]: boolean }>({})
 
   useEffect(() => {
     if (typeof window !== 'undefined' && window.Telegram?.WebApp) {
@@ -88,92 +82,28 @@ export default function Home() {
     }
   }
 
-  const handleButtonClick4 = () => {
-    if (buttonStage1 === 'check') {
-      window.open('https://youtu.be/xvFZjo5PgG0', '_blank')
-      setButtonStage1('claim')
+  const handleButtonClick = (buttonId: string) => {
+    const links: { [key: string]: string } = {
+      button4: 'https://youtu.be/xvFZjo5PgG0',
+      button5: 'https://twitter.com',
+      button6: 'https://telegram.org',
+      button7: 'https://discord.com',
+      button8: 'https://tiktok.com',
+    }
+    
+    if (buttonStages[buttonId] === 'check') {
+      window.open(links[buttonId], '_blank')
+      setButtonStages(prev => ({ ...prev, [buttonId]: 'claim' }))
     }
   }
 
-  const handleButtonClick5 = () => {
-    if (buttonStage2 === 'check') {
-      window.open('https://twitter.com', '_blank')
-      setButtonStage2('claim')
-    }
-  }
-
-  const handleButtonClick6 = () => {
-    if (buttonStage3 === 'check') {
-      window.open('https://telegram.org', '_blank')
-      setButtonStage3('claim')
-    }
-  }
-
-  const handleButtonClick7 = () => {
-    if (buttonStage7 === 'check') {
-      window.open('https://discord.com', '_blank')
-      setButtonStage7('claim')
-    }
-  }
-
-  const handleButtonClick8 = () => {
-    if (buttonStage8 === 'check') {
-      window.open('https://tiktok.com', '_blank')
-      setButtonStage8('claim')
-    }
-  }
-
-  const handleClaim4 = () => {
-    if (buttonStage1 === 'claim') {
-      setIsLoading(true)
-      handleIncreasePoints(200, 'button4')
+  const handleClaim = (buttonId: string) => {
+    if (buttonStages[buttonId] === 'claim') {
+      setIsLoading(prev => ({ ...prev, [buttonId]: true }))
+      handleIncreasePoints(200, buttonId)
       setTimeout(() => {
-        setButtonStage1('claimed')
-        setIsLoading(false)
-      }, 3000)
-    }
-  }
-
-  const handleClaim5 = () => {
-    if (buttonStage2 === 'claim') {
-      setIsLoading(true)
-      handleIncreasePoints(200, 'button5')
-      setTimeout(() => {
-        setButtonStage2('claimed')
-        setIsLoading(false)
-      }, 3000)
-    }
-  }
-
-  const handleClaim6 = () => {
-    if (buttonStage3 === 'claim') {
-      setIsLoading(true)
-      handleIncreasePoints(200, 'button6')
-      setTimeout(() => {
-        setButtonStage3('claimed')
-        setIsLoading(false)
-      }, 3000)
-    }
-  }
-
-  const handleClaim7 = () => {
-    if (buttonStage7 === 'claim') {
-      setIsLoading1(true)
-      handleIncreasePoints(200, 'button7')
-      setTimeout(() => {
-        setButtonStage7('claimed')
-        setIsLoading1(false)
-      }, 3000)
-    }
-  }
-
-  const handleClaim8 = () => {
-    if (buttonStage8 === 'claim') {
-      setIsLoading2(true)
-      handleIncreasePoints(200, 'button8')
-      setTimeout(() => {
-        setButtonStage8('claimed')
-        setIsLoading2(false)
+        setButtonStages(prev => ({ ...prev, [buttonId]: 'claimed' }))
+        setIsLoading(prev => ({ ...prev, [buttonId]: false }))
       }, 3000)
     }
   }
@@ -187,25 +117,11 @@ export default function Home() {
   return (
     <TaskUI 
       user={user}
-      buttonStage1={buttonStage1}
-      buttonStage2={buttonStage2}
-      buttonStage3={buttonStage3}
-      buttonStage7={buttonStage7}
-      buttonStage8={buttonStage8}
+      buttonStages={buttonStages}
       isLoading={isLoading}
-      isLoading1={isLoading1}
-      isLoading2={isLoading2}
       notification={notification}
-      handleButtonClick4={handleButtonClick4}
-      handleButtonClick5={handleButtonClick5}
-      handleButtonClick6={handleButtonClick6}
-      handleButtonClick7={handleButtonClick7}
-      handleButtonClick8={handleButtonClick8}
-      handleClaim4={handleClaim4}
-      handleClaim5={handleClaim5}
-      handleClaim6={handleClaim6}
-      handleClaim7={handleClaim7}
-      handleClaim8={handleClaim8}
+      handleButtonClick={handleButtonClick}
+      handleClaim={handleClaim}
     />
   )
 }
