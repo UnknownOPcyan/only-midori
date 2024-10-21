@@ -135,29 +135,46 @@ export default function Home() {
     if (!user) return
 
     if (farmingStatus === 'farm') {
-      try {
-        const res = await fetch('/api/start-farming', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ telegramId: user.telegramId }),
-        })
-        const data = await res.json()
-        if (data.success) {
-          setFarmingStatus('farming')
-          setTimeout(() => setFarmingStatus('claim'), 30000)
+        try {
+            const res = await fetch('/api/start-farming', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ telegramId: user.telegramId }),
+            })
+            const data = await res.json()
+            if (data.success) {
+                setFarmingStatus('farming')
+                setFarmingPoints(0)
+                
+                // Start the points counter
+                const pointsInterval = setInterval(() => {
+                    setFarmingPoints(prev => prev + 1)
+                }, 1000)
+
+                // After 30 seconds, clear interval and change status to claim
+                setTimeout(() => {
+                    clearInterval(pointsInterval)
+                    setFarmingStatus('claim')
+                }, 30000)
+            }
+        } catch (error) {
+            console.error('Error starting farming:', error)
         }
-      } catch (error) {
-        console.error('Error starting farming:', error)
-      }
     } else if (farmingStatus === 'claim') {
-        handleIncreasePoints(200, 'farmButton');
+        // Add the animation class
+        handleIncreasePoints(200, 'farmButton')
+        
+        // Reset farming points
+        setFarmingPoints(0)
+        
+        // Add a delay before changing status back to farm
         setTimeout(() => {
-          setFarmingStatus('farm');
-        }, 1000); // 2-second delay
-      }
-  }
+            setFarmingStatus('farm')
+        }, 1000) // 1-second delay for animation
+    }
+}
 
   const handleButtonClick1 = () => {
     if (buttonStage1 === 'check') {
