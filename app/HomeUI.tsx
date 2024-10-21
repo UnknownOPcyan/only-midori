@@ -11,6 +11,8 @@ interface HomeUIProps {
   farmingStatus: 'farm' | 'farming' | 'claim';
   isLoading: boolean;
   notification: string;
+  error: string | null;
+  isInitialLoading: boolean;
   handleButtonClick1: () => void;
   handleButtonClick2: () => void;
   handleButtonClick3: () => void;
@@ -28,6 +30,8 @@ export default function HomeUI({
   farmingStatus,
   isLoading,
   notification,
+  error,
+  isInitialLoading,
   handleButtonClick1,
   handleButtonClick2,
   handleButtonClick3,
@@ -68,7 +72,6 @@ export default function HomeUI({
 
   return (
     <div className="home-container">
-      <div className="home-container">
       {isInitialLoading ? (
         <div className="content-area">
           <div className="loader"></div>
@@ -152,7 +155,7 @@ export default function HomeUI({
                 Farming
                 <div className="farming-points">
                   <span className={`farming-points-number ${isSliding ? 'sliding-out' : ''}`} key={currentNumber}>
-                    .{farmingPoints}
+                    {farmingPoints}
                   </span>
                 </div>
               </>
@@ -161,26 +164,26 @@ export default function HomeUI({
             )}
           </button>
           {notification && <div className="notification-banner">{notification}</div>}
-          <div className="footer-container">
-            <Link href="/">
-              <div className="footer-link">
-                <i className="fas fa-home footer-icon"></i>
-                <p className="footer-text">Home</p>
-              </div>
-            </Link>
-            <Link href="/invite">
-              <div className="footer-link">
-                <i className="fas fa-users footer-icon"></i>
-                <p className="footer-text">Friends</p>
-              </div>
-            </Link>
-            <Link href="/task">
-              <div className="footer-link">
-                <i className="fas fa-clipboard footer-icon"></i>
-                <p className="footer-text">Tasks</p>
-              </div>
-            </Link>
+           <div className="footer-container">
+        <Link href="/">
+          <div className="footer-link active-link">
+            <i className="fas fa-home footer-icon"></i>
+            <p className="footer-text">Home</p>
           </div>
+        </Link>
+        <Link href="/invite">
+          <div className="footer-link">
+            <i className="fas fa-users footer-icon"></i>
+            <p className="footer-text">Friends</p>
+          </div>
+        </Link>
+        <Link href="/task">
+          <div className="footer-link">
+            <i className="fas fa-clipboard footer-icon"></i>
+            <p className="footer-text">Tasks</p>
+          </div>
+        </Link>
+      </div>
         </>
       )}
     </div>
