@@ -21,7 +21,7 @@ interface HomeUIProps {
 }
 
 export default function HomeUI({
-  user,
+  user
   buttonStage1,
   buttonStage2,
   buttonStage3,
