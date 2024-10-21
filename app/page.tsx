@@ -21,6 +21,7 @@ export default function Home() {
   const [buttonStage2, setButtonStage2] = useState<'check' | 'claim' | 'claimed'>('check')
   const [buttonStage3, setButtonStage3] = useState<'check' | 'claim' | 'claimed'>('check')
   const [farmingStatus, setFarmingStatus] = useState<'farm' | 'farming' | 'claim'>('farm')
+  const [farmingPoints, setFarmingPoints] = useState(0);
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
