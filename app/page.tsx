@@ -203,12 +203,6 @@ export default function Home() {
     }
   }
 
-  if (error) {
-    return <div className="container mx-auto p-4 text-red-500">{error}</div>
-  }
-
-  if (!user) return <div className="container mx-auto p-4">Loading...</div>
-
   return (
     <HomeUI 
       user={user}
