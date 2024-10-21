@@ -69,14 +69,20 @@ export default function HomeUI({
 
   return (
     <div className="home-container">
-      <div className="header-container">
-        <div className="dog-image-container">
-          <img
-            alt="Animated style dog image"
-            className="dog-image"
-            src="https://storage.googleapis.com/a1aa/image/YlpvEfbklKRiDi8LX5Rww5U3zZZwHEUfju1qUNknpEZ6e2OnA.jpg"
-          />
-        </div>
+      {error ? (
+        <div className={styles.error}>{error}</div>
+      ) : !user ? (
+        <div className={styles.loader}></div>
+      ) : (
+        <>
+        <div className="header-container">
+          <div className="dog-image-container">
+            <img
+              alt="Animated style dog image"
+              className="dog-image"
+              src="https://storage.googleapis.com/a1aa/image/YlpvEfbklKRiDi8LX5Rww5U3zZZwHEUfju1qUNknpEZ6e2OnA.jpg"
+            />
+          </div>
         <p id="pixelDogsCount" className="pixel-dogs-count">
           {user.points} PixelDogs
         </p>
