@@ -146,7 +146,7 @@ export default function HomeUI({
                 className={`farming-points-number ${isSliding ? 'sliding-out' : ''}`}
                 key={currentNumber}
               >
-                .{farmingPoints}
+                {farmingPoints}
               </span>
             </div>
           </>
