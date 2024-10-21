@@ -109,33 +109,64 @@
 }
 
 .farm-button {
-  background-color: #2d3748; /* gray-800 */
+  background-color: #4CAF50; /* Changed to green */
   color: white;
-  width: 75%; /* w-3/4 */
-  padding: 1rem; /* py-4 */
-  border-radius: 1rem; /* rounded-full */
-  margin-bottom: 1.5rem; /* mb-6 */
-  font-weight: 600; /* font-semibold */
-  font-size: 1.25rem; /* text-lg */
+  width: 75%;
+  padding: 1rem;
+  border-radius: 1rem;
+  margin-bottom: 1.5rem;
+  font-weight: 700; /* Made text bold */
+  font-size: 1.25rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   transition: background-color 0.3s;
-  position: fixed; /* Fixed position */
-  bottom: 65px; /* Distance from the bottom */
-  left: 50%; /* Center horizontally */
-  transform: translateX(-50%); /* Adjust to center the button */
-  z-index: 1000; /* Ensures it's above other content */
+  position: fixed;
+  bottom: 65px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
   cursor: pointer;
   opacity: 1;
   pointer-events: auto;
 }
 
+.farm-button.farming {
+  background-color: #4CAF50;
+  animation: none;
+}
+
+.farm-button.completed {
+  background-color: #808080;
+  cursor: not-allowed;
+}
+
+.farm-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Claim Farm Animation */
 .claimFarm {
-  position: relative;
+  position: absolute;
   padding: 10px 22px;
+  top: 50%;
+  left: 50%;
   border-radius: 6px;
-  color: #fff;
+  border: none;
+  color: #0c0000;
   cursor: pointer;
-  background-color: transparent; /* transparent background for text */
+  background-color: #5e0fc700;
   transition: all 0.2s ease;
 }
 
@@ -177,12 +208,10 @@
     background-position: 5% 90%, 10% 90%, 10% 90%, 15% 90%, 25% 90%, 25% 90%,
       40% 90%, 55% 90%, 70% 90%;
   }
-
   50% {
     background-position: 0% 80%, 0% 20%, 10% 40%, 20% 0%, 30% 30%, 22% 50%,
       50% 50%, 65% 20%, 90% 30%;
   }
-
   100% {
     background-position: 0% 70%, 0% 10%, 10% 30%, 20% -10%, 30% 20%, 22% 40%,
       50% 40%, 65% 10%, 90% 20%;
@@ -209,44 +238,14 @@
     background-position: 10% -10%, 30% 10%, 55% -10%, 70% -10%, 85% -10%,
       70% -10%, 70% 0%;
   }
-
   50% {
     background-position: 0% 80%, 20% 80%, 45% 60%, 60% 100%, 75% 70%, 95% 60%,
       105% 0%;
   }
-
   100% {
     background-position: 0% 90%, 20% 90%, 45% 70%, 60% 110%, 75% 80%, 95% 70%,
       110% 10%;
     background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
-  }
-}
-
-
-.farm-button.farming {
-  background-color: #4CAF50;
-  animation: pulse 2s infinite;
-}
-
-.farm-button.completed {
-  background-color: #808080;
-  cursor: not-allowed;
-}
-
-.farm-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.7;
-}
-
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-  100% {
-    transform: scale(1);
   }
 }
 
@@ -265,6 +264,46 @@
 
 .farm-button:hover {
   background-color: #1a202c; /* hover:bg-gray-900 */
+}
+
+/* Farming points animation */
+.farming-points {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  height: 1.5em;
+  margin-left: 5px;
+}
+
+.farming-points-number {
+  position: absolute;
+  animation: slideIn 1s ease-out;
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.farming-points-number.sliding-out {
+  animation: slideOut 1s ease-in;
+}
+
+@keyframes slideOut {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
 }
 
 .update-text {
