@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { toggleUpdateText } from './utils';
 import './HomeUI.css';
@@ -36,6 +36,10 @@ export default function HomeUI({
   handleClaim3,
   handleFarmClick,
 }: HomeUIProps) {
+  const [farmingPoints, setFarmingPoints] = useState(0);
+  const [currentNumber, setCurrentNumber] = useState(0);
+  const [isSliding, setIsSliding] = useState(false);
+
   useEffect(() => {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
@@ -43,6 +47,24 @@ export default function HomeUI({
     document.head.appendChild(link);
     toggleUpdateText();
   }, []);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (farmingStatus === 'farming') {
+      interval = setInterval(() => {
+        setIsSliding(true);
+        setTimeout(() => {
+          setFarmingPoints(prev => prev + 1);
+          setCurrentNumber(prev => prev + 1);
+          setIsSliding(false);
+        }, 500);
+      }, 1000);
+    } else {
+      setFarmingPoints(0);
+      setCurrentNumber(0);
+    }
+    return () => clearInterval(interval);
+  }, [farmingStatus]);
 
   return (
     <div className="home-container">
@@ -110,37 +132,51 @@ export default function HomeUI({
       </div>
       <div className="flex-grow"></div>
       <button 
-  className={`farm-button ${farmingStatus === 'claim' ? 'claimFarm' : ''}`} 
-  onClick={handleFarmClick} 
-  disabled={farmingStatus === 'farming'}
->
-  {farmingStatus === 'farm' ? 'Farm PixelDogs' 
-    : farmingStatus === 'farming' ? 'Farming...' 
-    : <span className="claimFarm">Claim Farm</span>}
-</button>
+        className={`farm-button ${farmingStatus === 'farming' ? 'farming' : ''}`}
+        onClick={handleFarmClick}
+        disabled={farmingStatus === 'farming'}
+      >
+        {farmingStatus === 'farm' ? (
+          <span className="claimFarm">Farm PixelDogs</span>
+        ) : farmingStatus === 'farming' ? (
+          <>
+            Farming
+            <div className="farming-points">
+              <span 
+                className={`farming-points-number ${isSliding ? 'sliding-out' : ''}`}
+                key={currentNumber}
+              >
+                .{farmingPoints}
+              </span>
+            </div>
+          </>
+        ) : (
+          <span className="claimFarm">Claim Farm</span>
+        )}
+      </button>
       {notification && (
-        <div className="notification">
+        <div className="notification-banner">
           {notification}
         </div>
       )}
       <div className="footer-container">
         <Link href="/">
-          <a className="flex flex-col items-center text-gray-800">
-            <i className="fas fa-home text-2xl"></i>
-            <p className="text-sm">Home</p>
-          </a>
+          <div className="footer-link">
+            <i className="fas fa-home footer-icon"></i>
+            <p className="footer-text">Home</p>
+          </div>
         </Link>
         <Link href="/invite">
-          <a className="flex flex-col items-center text-gray-800">
-            <i className="fas fa-users text-2xl"></i>
-            <p className="text-sm">Friends</p>
-          </a>
+          <div className="footer-link">
+            <i className="fas fa-users footer-icon"></i>
+            <p className="footer-text">Friends</p>
+          </div>
         </Link>
         <Link href="/task">
-          <a className="flex flex-col items-center text-gray-800">
-            <i className="fas fa-clipboard text-2xl"></i>
-            <p className="text-sm">Tasks</p>
-          </a>
+          <div className="footer-link">
+            <i className="fas fa-clipboard footer-icon"></i>
+            <p className="footer-text">Tasks</p>
+          </div>
         </Link>
       </div>
     </div>
